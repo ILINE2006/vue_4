@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '../store/index.js' // Подключаем хранилище
+import store from '../store/index.js' 
 
-// 1. СНАЧАЛА создаем охранников (функции проверок) [cite: 686-696]
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
     next();
@@ -18,7 +17,7 @@ const ifAuthenticated = (to, from, next) => {
   next('/login');
 };
 
-// 2. ТОЛЬКО ПОТОМ используем их в списке страниц [cite: 699-714]
+
 const routes = [
   {
     path: '/',
@@ -33,11 +32,16 @@ const routes = [
     component: function(){
       return import('../components/Login.vue');
     },
-    beforeEnter: ifNotAuthenticated, // Проверяем: если не авторизован - пускаем
+    beforeEnter: ifNotAuthenticated, 
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/RegisterView.vue'),
+    beforeEnter: ifNotAuthenticated 
   }
 ];
 
-// 3. И в конце собираем всё вместе
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
