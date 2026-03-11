@@ -1,14 +1,43 @@
 <template>
   <form class="login" @submit.prevent="login">
-    <h1>Sign name</h1>
-    <label>User name</label>
-    <input type="text" required v-model="username" />
-    <label>Password</label>
+    <h1>Вход в систему</h1>
+    
+    <label>Email</label>
+    <input type="email" required v-model="email" />
+
+    <label>Пароль</label>
     <input type="password" required v-model="password" />
-    <hr />
-    <button type="submit">Login</button>
+
+    <hr/>
+    <button type="submit">Вход</button>
+    <button type="button" @click="$router.push('/')">Назад</button>
   </form>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
+      const userData = {
+        email: this.email,
+        password: this.password,
+      };
+
+      this.$store
+        .dispatch("AUTH_REQUEST", userData)
+        .then(() => {
+          this.$router.push("/");
+        });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .login {
@@ -19,34 +48,13 @@
   margin: 0 auto;
 }
 .login input,
-button {
+.login button {
   border: 1px solid black;
   border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 hr {
   margin: 10px 0;
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    login() {
-      const userData = {
-        username: this.username,
-        password: this.password,
-      };
-
-      this.$store
-        .dispatch('AUTH_REQUEST', userData)
-        .then(() => this.$router.push("/"));
-    },
-  },
-};
-</script>
