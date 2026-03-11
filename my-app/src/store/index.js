@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
-import { loginRequest } from '@/utils/api.js';
-
+import { loginRequest, logoutRequest } from '@/utils/api.js';
 
 export default createStore({
   state: {
@@ -8,6 +7,18 @@ export default createStore({
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
+    getToken: (state) => state.token 
+  },
+  mutations: {
+    AUTH_SUCCESS: (state, token) => {
+      state.token = token;
+    },
+    AUTH_ERROR: (state) => {
+      state.token = '';
+    },
+    AUTH_LOGOUT: (state) => {
+      state.token = '';
+    }
   },
   actions: {
     AUTH_REQUEST: ({ commit }, user) => {
@@ -18,21 +29,21 @@ export default createStore({
             localStorage.setItem('myAppToken', token);
             resolve();
           })
-          .catch(() => {
+          .catch((error) => {
             commit('AUTH_ERROR');
             localStorage.removeItem('myAppToken');
-            reject();
+            reject(error);
           });
       });
     },
-  },
-  mutations: {
-    AUTH_SUCCESS: (state, token) => {
-      state.token = token;
-    },
-    AUTH_ERROR: (state) => {
-      state.token = '';
-    },
+    AUTH_LOGOUT: ({ commit, state }) => {
+      return new Promise((resolve) => {
+        logoutRequest(state.token).finally(() => {
+          commit('AUTH_LOGOUT');
+          localStorage.removeItem('myAppToken'); 
+          resolve();
+        });
+      });
+    }
   },
 });
-

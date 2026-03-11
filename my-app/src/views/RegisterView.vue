@@ -1,6 +1,6 @@
 <template>
   <form class="register" @submit.prevent="register">
-    <h1>Регистрация</h1>
+    <h1>Register</h1>
     
     <label>ФИО</label>
     <input type="text" required v-model="fio" :class="{ error: errors.fio }" />
@@ -10,13 +10,13 @@
     <input type="email" required v-model="email" :class="{ error: errors.email }" />
     <span v-if="errors.email" class="error-text">{{ errors.email[0] }}</span>
 
-    <label>Пароль</label>
+    <label>Password</label>
     <input type="password" required v-model="password" :class="{ error: errors.password }" />
     <span v-if="errors.password" class="error-text">{{ errors.password[0] }}</span>
 
     <hr/>
-    <button type="submit">Зарегистрироваться</button>
-    <button type="button" @click="$router.push('/')">Назад</button>
+    <button type="submit">register</button>
+    <button type="button" @click="$router.push('/')">back</button>
   </form>
 </template>
 
