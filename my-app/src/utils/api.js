@@ -47,10 +47,6 @@ export const registerRequest = (user) => {
   });
 }; 
 
-export const getProducts = () => {
-  return fetch(`${API}/products`).then(response => response.json());
-};
-
 export const logoutRequest = (token) => {
   return fetch(`${API}/logout`, {
     headers: {
